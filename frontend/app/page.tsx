@@ -93,10 +93,10 @@ const RESULT_RECOVERY_RETRIES = 8;
 const RESULT_RECOVERY_DELAY_MS = 1500;
 const RESULT_STORAGE_KEY = 'research-workbench:last-result:v3';
 const APP_BADGE = '论文转公众号工作台';
-const APP_TITLE = '科研论文转公众号推文';
-const APP_KICKER = '科研论文转公众号推文 / HTML / Word';
+const APP_TITLE = '论文转公众号工作台';
+const APP_KICKER = '科研论文转写 / HTML / Word';
 const APP_DESCRIPTION =
-  '上传科研论文 PDF，实时查看解析、写作和导出进度，拿到适合公众号发布的线程稿、HTML 成稿和 Word 文档。';
+  '上传科研论文 PDF，实时查看解析、写作和导出进度，生成适合中文公众号发布的线程稿、HTML 成稿和 Word 文档。';
 
 const FLOW_STEPS = ['拖入 PDF', '解析结构', '生成线程', '导出 HTML / Word'];
 const PROGRESS_DETAIL_STAGES = [

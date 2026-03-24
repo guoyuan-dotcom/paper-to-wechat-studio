@@ -412,7 +412,7 @@ async function lookupDoiMetadata(doi) {
   try {
     const response = await axios.get(`https://api.crossref.org/works/${encodeURIComponent(cleanDoi)}`, {
       timeout: 10000,
-      headers: { 'User-Agent': 'research-workbench/1.0 metadata' }
+      headers: { 'User-Agent': 'paper-to-wechat-workbench/1.0 metadata' }
     });
     const message = response.data?.message || {};
     return {
@@ -435,7 +435,7 @@ async function lookupMetadataByTitle(title) {
     const response = await axios.get('https://api.crossref.org/works', {
       params: { 'query.title': queryTitle, rows: 5 },
       timeout: 12000,
-      headers: { 'User-Agent': 'research-workbench/1.0 metadata' }
+      headers: { 'User-Agent': 'paper-to-wechat-workbench/1.0 metadata' }
     });
     const items = Array.isArray(response.data?.message?.items) ? response.data.message.items : [];
     const best = items
@@ -1516,5 +1516,5 @@ app.use((error, _req, res, _next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Research Workbench API running on port ${PORT}`);
+  console.log(`论文转公众号工作台 API 已启动，端口 ${PORT}`);
 });

@@ -1,7 +1,7 @@
 {
-  "name": "research-workbench-backend",
+  "name": "paper-to-wechat-workbench-backend",
   "version": "1.0.0",
-  "description": "Research Workbench Backend - OpenClaw Gateway Proxy",
+  "description": "论文转公众号工作台后端服务",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

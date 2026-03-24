@@ -16,7 +16,7 @@ const displayFont = Oxanium({
 });
 
 export const metadata: Metadata = {
-  title: '科研论文转公众号推文',
+  title: '论文转公众号工作台',
   description: '上传科研论文 PDF，生成适合中文公众号发布的推文线程、HTML 排版稿和 Word 文档。'
 };
 

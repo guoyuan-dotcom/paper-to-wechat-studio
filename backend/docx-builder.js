@@ -161,7 +161,7 @@ async function buildDocxBuffer({ title, article, metadata, keywords, post }) {
   ];
 
   const document = new Document({
-    creator: '科研论文转公众号推文',
+    creator: '论文转公众号工作台',
     title,
     description: '科研论文公众号长文 Word 稿件',
     sections: [
