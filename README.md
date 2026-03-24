@@ -106,12 +106,6 @@ npm run dev
 4. 点击“生成线程与导出稿”
 5. 下载 HTML 或 Word，并继续编辑长文稿
 
-## 发布到 GitHub 前确认
-
-- `backend/.env` 不存在或不包含真实密钥
-- `node_modules`、`.next`、日志、导出文件不会提交
-- 根目录只保留源码、截图、说明文档和必要脚本
-
 ## 技术栈
 
 - Frontend: Next.js 14, React 18, TypeScript
