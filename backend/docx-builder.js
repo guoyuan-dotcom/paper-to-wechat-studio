@@ -161,9 +161,9 @@ async function buildDocxBuffer({ title, article, metadata, keywords, post }) {
   ];
 
   const document = new Document({
-    creator: 'Research Workbench',
+    creator: '科研论文转公众号推文',
     title,
-    description: 'Paper to Word article',
+    description: '科研论文公众号长文 Word 稿件',
     sections: [
       {
         properties: {

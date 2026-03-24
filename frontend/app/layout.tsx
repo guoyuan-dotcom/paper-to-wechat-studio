@@ -16,8 +16,8 @@ const displayFont = Oxanium({
 });
 
 export const metadata: Metadata = {
-  title: 'Paper to WeChat Studio',
-  description: 'Upload a research paper PDF and generate WeChat-ready thread drafts, HTML exports, and Word documents.'
+  title: '科研论文转公众号推文',
+  description: '上传科研论文 PDF，生成适合中文公众号发布的推文线程、HTML 排版稿和 Word 文档。'
 };
 
 export default function RootLayout({

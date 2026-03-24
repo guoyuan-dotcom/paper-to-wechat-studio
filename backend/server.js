@@ -965,7 +965,7 @@ function getGenericRetryDelayMs(attempt, deadline) {
 async function requestJsonFromKimi({ apiKey, model, systemPrompt, payload, maxTokens, deadline, onRetry }) {
   const resolvedApiKey = resolveKimiApiKey(apiKey);
   if (!resolvedApiKey) {
-    throw new Error('Kimi API key is not configured.');
+    throw new Error('未配置 Kimi API 密钥。');
   }
   for (let attempt = 0; attempt <= KIMI_MAX_RETRIES; attempt += 1) {
     try {
@@ -1014,7 +1014,7 @@ async function requestJsonFromKimi({ apiKey, model, systemPrompt, payload, maxTo
 async function requestTextFromKimi({ apiKey, model, systemPrompt, payload, maxTokens, deadline, onRetry }) {
   const resolvedApiKey = resolveKimiApiKey(apiKey);
   if (!resolvedApiKey) {
-    throw new Error('Kimi API key is not configured.');
+    throw new Error('未配置 Kimi API 密钥。');
   }
   for (let attempt = 0; attempt <= KIMI_MAX_RETRIES; attempt += 1) {
     try {
@@ -1285,7 +1285,7 @@ async function generateWithLlm(source, fallback, options, onProgress, apiKey) {
   const reportProgress = typeof onProgress === 'function' ? onProgress : () => {};
   const resolvedApiKey = resolveKimiApiKey(apiKey);
   if (!resolvedApiKey) {
-    throw new Error('Kimi API key is not configured.');
+    throw new Error('未配置 Kimi API 密钥。');
   }
   const distilledChunks = normalizeWhitespace(source.rawText).length > 22000
     ? await distillFullTextChunksWithLlm(source, deadline, reportProgress, resolvedApiKey)
@@ -1362,7 +1362,7 @@ app.get('/api/health', (_req, res) => {
 app.get('/api/progress/:id', (req, res) => {
   const snapshot = progressStore.get(String(req.params.id || '').trim());
   if (!snapshot) {
-    return res.status(404).json({ error: 'Progress not found.' });
+    return res.status(404).json({ error: '未找到对应的进度记录。' });
   }
   return res.json(snapshot);
 });
@@ -1370,7 +1370,7 @@ app.get('/api/progress/:id', (req, res) => {
 app.get('/api/result/:id', (req, res) => {
   const payload = resultStore.get(String(req.params.id || '').trim());
   if (!payload) {
-    return res.status(404).json({ error: 'Result not found.' });
+    return res.status(404).json({ error: '未找到对应的生成结果。' });
   }
   return res.json(payload);
 });
@@ -1385,11 +1385,11 @@ app.post('/api/generate-thread', upload.single('file'), async (req, res) => {
     updateProgress(progressId, { status: 'uploading', step: 'received', label: '已接收文件，正在校验上传内容。', percent: 5 });
     if (!req.file) {
       finalizeProgress(progressId, { status: 'error', step: 'received', label: '没有接收到 PDF 文件。', percent: 100 });
-      return res.status(400).json({ error: 'Please upload a PDF file.' });
+      return res.status(400).json({ error: '请先上传 PDF 文件。' });
     }
     if (req.file.mimetype !== 'application/pdf') {
       finalizeProgress(progressId, { status: 'error', step: 'received', label: '上传的文件不是 PDF。', percent: 100 });
-      return res.status(400).json({ error: 'Only PDF files are supported.' });
+      return res.status(400).json({ error: '目前只支持 PDF 文件。' });
     }
 
     const options = {
@@ -1404,7 +1404,7 @@ app.post('/api/generate-thread', upload.single('file'), async (req, res) => {
     const paper = await extractPaperData(req.file, requestKimiApiKey);
     if (!paper.rawText || paper.rawText.length < 500) {
       finalizeProgress(progressId, { status: 'error', step: 'parsing', label: 'PDF 文本层过短或噪声过高，无法稳定生成。', percent: 100 });
-      return res.status(422).json({ error: 'The PDF text is too short or too noisy to generate a reliable draft.' });
+      return res.status(422).json({ error: 'PDF 文本层过短或噪声过高，暂时无法稳定生成。' });
     }
 
     updateProgress(progressId, { status: 'extracting', step: 'structuring', label: '全文已提取，正在整理标题、作者、期刊和内容结构。', percent: 34 });
@@ -1425,14 +1425,14 @@ app.post('/api/generate-thread', upload.single('file'), async (req, res) => {
         llmError = extractAxiosErrorMessage(error);
         if (!KIMI_ALLOW_LOCAL_FALLBACK) {
           finalizeProgress(progressId, { status: 'error', step: 'llm', label: 'Moonshot 当前繁忙或超时，请稍后重试。', percent: 100, detail: llmError });
-          return res.status(503).json({ error: 'Moonshot is busy right now. Please retry in a moment.', detail: llmError, code: 'LLM_UNAVAILABLE' });
+          return res.status(503).json({ error: 'Moonshot 当前繁忙或超时，请稍后重试。', detail: llmError, code: 'LLM_UNAVAILABLE' });
         }
       }
     }
 
     if (!requestKimiApiKey) {
-      finalizeProgress(progressId, { status: 'error', step: 'llm', label: 'Please enter your Kimi API key before generating.', percent: 100 });
-      return res.status(400).json({ error: 'Please enter your Kimi API key before generating.', code: 'MISSING_KIMI_API_KEY' });
+      finalizeProgress(progressId, { status: 'error', step: 'llm', label: '请先输入你的 Kimi API 密钥。', percent: 100 });
+      return res.status(400).json({ error: '请先输入你的 Kimi API 密钥。', code: 'MISSING_KIMI_API_KEY' });
     }
 
     const generated = normalizeGeneratedContent(llmOutput, fallback, options);
@@ -1498,7 +1498,7 @@ app.post('/api/generate-thread', upload.single('file'), async (req, res) => {
       resultStore.set(progressId, payload);
     }
 
-    finalizeProgress(progressId, { status: 'done', step: 'completed', label: 'HTML / Word export finished.', percent: 100, detail: llmError });
+    finalizeProgress(progressId, { status: 'done', step: 'completed', label: 'HTML 与 Word 已导出完成。', percent: 100, detail: llmError });
 
     return res.json(payload);
   } catch (error) {
@@ -1512,7 +1512,7 @@ app.use((error, _req, res, _next) => {
   if (error instanceof multer.MulterError) {
     return res.status(400).json({ error: error.message });
   }
-  return res.status(500).json({ error: error instanceof Error ? error.message : 'Unknown server error.' });
+  return res.status(500).json({ error: error instanceof Error ? error.message : '服务器出现未知错误。' });
 });
 
 app.listen(PORT, () => {

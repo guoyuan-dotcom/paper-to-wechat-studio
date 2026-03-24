@@ -92,9 +92,9 @@ const GENERATION_TIMEOUT_MS = 420000;
 const RESULT_RECOVERY_RETRIES = 8;
 const RESULT_RECOVERY_DELAY_MS = 1500;
 const RESULT_STORAGE_KEY = 'research-workbench:last-result:v3';
-const APP_BADGE = 'Paper to WeChat Studio';
+const APP_BADGE = '论文转公众号工作台';
 const APP_TITLE = '科研论文转公众号推文';
-const APP_KICKER = 'Research Paper to WeChat Draft / HTML / Word';
+const APP_KICKER = '科研论文转公众号推文 / HTML / Word';
 const APP_DESCRIPTION =
   '上传科研论文 PDF，实时查看解析、写作和导出进度，拿到适合公众号发布的线程稿、HTML 成稿和 Word 文档。';
 
@@ -259,7 +259,7 @@ export default function Home() {
       return;
     }
     if (!kimiApiKey.trim()) {
-      setError('先输入 Kimi API Key。');
+      setError('先输入 Kimi API 密钥。');
       return;
     }
 
@@ -353,7 +353,7 @@ export default function Home() {
         data = rawText ? JSON.parse(rawText) : {};
       } catch (_parseError) {
         data = {
-          error: rawText || `Request failed with status ${response.status}`
+          error: rawText || `请求失败（HTTP ${response.status}）`
         };
       }
 
@@ -478,7 +478,7 @@ export default function Home() {
         </div>
 
         <div className="hero-stats">
-          <HeroStat label="生成引擎" value={result?.diagnostics.llmUsed ? 'Moonshot' : 'Fallback'} />
+          <HeroStat label="生成引擎" value={result?.diagnostics.llmUsed ? 'Moonshot' : '保底稿'} />
           <HeroStat label="论文页数" value={result ? `${result.file.pages}` : '--'} />
           <HeroStat label="导出格式" value={result ? 'HTML + DOCX' : '待生成'} />
         </div>
@@ -487,7 +487,7 @@ export default function Home() {
       <div className="dashboard-grid">
         <aside className="dashboard-rail">
           <section className="dashboard-panel command-panel">
-            <PanelHeading kicker="Intake" title="上传与控制" icon={<Upload className="h-5 w-5" />} />
+            <PanelHeading kicker="上传区" title="上传与控制" icon={<Upload className="h-5 w-5" />} />
 
             <button
               type="button"
@@ -513,12 +513,12 @@ export default function Home() {
             </div>
 
             <label className="text-label">
-              Kimi API Key
+              Kimi API 密钥
               <input
                 type="password"
                 value={kimiApiKey}
                 onChange={(event) => setKimiApiKey(event.target.value)}
-                placeholder="输入你自己的 Moonshot / Kimi API Key"
+                placeholder="输入你自己的 Kimi 密钥"
                 autoComplete="off"
                 spellCheck={false}
                 className="secret-input"
@@ -557,14 +557,14 @@ export default function Home() {
 
         <section className="dashboard-main">
           <section className="dashboard-panel dashboard-status status-panel progress-primary-panel">
-            <PanelHeading kicker="Status" title="实时进度" icon={<ScanSearch className="h-5 w-5" />} />
+            <PanelHeading kicker="进度区" title="实时进度" icon={<ScanSearch className="h-5 w-5" />} />
 
             <div className="status-primary-grid">
               <div className="status-primary-hero">
                 <div className="status-ring-shell">
                   <ProgressRing percent={percent} status={status} step={currentProgressStep} />
                   <div className="status-ring-copy">
-                    <p className="section-kicker">Live Brief</p>
+                    <p className="section-kicker">实时摘要</p>
                     <p className="status-copy">{liveStatusText}</p>
                     <div className="flow-mini">
                       {FLOW_STEPS.map((step, index) => (
@@ -582,16 +582,16 @@ export default function Home() {
                 {progress?.detail ? <p className="progress-detail">{progress.detail}</p> : null}
 
                 <div className="status-meta-grid">
-                  <MetricMini label="Stage" value={progressStageLabel(progress?.step || status)} />
-                  <MetricMini label="Percent" value={`${percent}%`} />
-                  <MetricMini label="State" value={statusLabel(status)} />
+                  <MetricMini label="阶段" value={progressStageLabel(progress?.step || status)} />
+                  <MetricMini label="进度" value={`${percent}%`} />
+                  <MetricMini label="状态" value={statusLabel(status)} />
                 </div>
               </div>
 
               <div className="status-primary-stream">
                 <div className="progress-detail-board">
                   <div className="progress-detail-board-header">
-                    <p className="section-kicker">Stage Breakdown</p>
+                    <p className="section-kicker">阶段拆解</p>
                     <span>{percent}%</span>
                   </div>
                   <div className="progress-detail-list">
@@ -615,7 +615,7 @@ export default function Home() {
                             <p>{copy}</p>
                           </div>
                           <span className="progress-detail-value">
-                            {itemState === 'done' ? 'Done' : itemState === 'active' ? `${percent}%` : '--'}
+                            {itemState === 'done' ? '完成' : itemState === 'active' ? `${percent}%` : '--'}
                           </span>
                         </article>
                       );
@@ -625,8 +625,8 @@ export default function Home() {
 
                 <div className="progress-log">
                   <div className="progress-log-header">
-                    <p className="section-kicker">Live Feed</p>
-                    <span>{progressHistory.length} events</span>
+                    <p className="section-kicker">实时日志</p>
+                    <span>{progressHistory.length} 条</span>
                   </div>
 
                   {progressHistory.length ? (
@@ -655,7 +655,7 @@ export default function Home() {
 
           <section className="dashboard-panel compact-export-panel">
             <div className="compact-export-header">
-              <PanelHeading kicker="Output Pack" title="下载与报告" icon={<Download className="h-5 w-5" />} />
+              <PanelHeading kicker="导出区" title="下载与报告" icon={<Download className="h-5 w-5" />} />
               {result ? (
                 <div className="export-actions compact-export-actions">
                   <button
@@ -687,14 +687,14 @@ export default function Home() {
             {result ? (
               <div className="compact-export-grid">
                 <div className="hook-panel compact-hook-panel">
-                  <p className="meta-line meta-line-light">Hook</p>
+                  <p className="meta-line meta-line-light">开场钩子</p>
                   <p>{result.output.hook}</p>
                 </div>
                 <div className="diagnostic-box compact-diagnostic-box">
                   <p className="meta-line">诊断</p>
                   <div className="diagnostic-grid">
-                    <span>Sections: {result.diagnostics.sectionsFound.join(', ') || 'none'}</span>
-                    <span>LLM: {result.diagnostics.llmUsed ? 'enabled' : 'fallback'}</span>
+                    <span>识别章节：{result.diagnostics.sectionsFound.join(', ') || '未识别'}</span>
+                    <span>生成方式：{result.diagnostics.llmUsed ? '大模型' : '保底稿'}</span>
                   </div>
                   {result.diagnostics.llmError ? <p className="diagnostic-warning">{result.diagnostics.llmError}</p> : null}
                 </div>
@@ -715,7 +715,7 @@ export default function Home() {
       {result ? (
         <section className="result-stack result-stack-standalone">
           <section className="dashboard-panel">
-            <PanelHeading kicker="Extracted Core" title="论文主线" icon={<Sparkles className="h-5 w-5" />} />
+            <PanelHeading kicker="解析结果" title="论文主线" icon={<Sparkles className="h-5 w-5" />} />
 
             <div className="paper-summary">
               <div className="title-block">
@@ -760,14 +760,14 @@ export default function Home() {
 
           <div className="content-grid">
             <section className="dashboard-panel thread-panel">
-              <PanelHeading kicker="Thread Draft" title="推文线程" icon={<PenSquare className="h-5 w-5" />} />
+              <PanelHeading kicker="线程稿" title="推文线程" icon={<PenSquare className="h-5 w-5" />} />
 
               <div className="thread-grid">
                 {result.output.thread.map((tweet, index) => (
                   <article key={`${index}-${tweet.slice(0, 24)}`} className="thread-card">
                     <div className="thread-card-top">
                       <div>
-                        <p className="meta-line">Tweet {index + 1}</p>
+                        <p className="meta-line">第 {index + 1} 条</p>
                         <p className="thread-index">0{index + 1}</p>
                       </div>
                       <button
@@ -786,7 +786,7 @@ export default function Home() {
             </section>
 
             <section className="dashboard-panel longform-panel">
-              <PanelHeading kicker="Editable Longform" title="长文稿" icon={<Hash className="h-5 w-5" />} />
+              <PanelHeading kicker="长稿区" title="长文稿" icon={<Hash className="h-5 w-5" />} />
 
               <div className="token-wrap compact-token-wrap">
                 {result.output.hashtags.map((tag) => (
@@ -803,10 +803,10 @@ export default function Home() {
             </section>
 
             <section className="dashboard-panel preview-panel">
-              <PanelHeading kicker="Layout Preview" title="HTML / Word 预览" icon={<ArrowUpRight className="h-5 w-5" />} />
+              <PanelHeading kicker="版式预览" title="HTML / Word 预览" icon={<ArrowUpRight className="h-5 w-5" />} />
 
               <iframe
-                title="HTML export preview"
+                title="HTML 导出预览"
                 className="preview-frame"
                 srcDoc={getPreviewDocument(result.output.previewHtml)}
               />
@@ -861,6 +861,14 @@ function isStepActive(status: Status, index: number, progressStep?: string) {
 
 function progressStageLabel(step: string) {
   switch (step) {
+    case 'idle':
+      return '待开始';
+    case 'uploading':
+      return '接收文件';
+    case 'extracting':
+      return '解析中';
+    case 'writing':
+      return '生成中';
     case 'queued':
     case 'received':
       return '上传';
