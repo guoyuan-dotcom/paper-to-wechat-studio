@@ -118,3 +118,7 @@ npm run dev
 - Backend: Node.js, Express
 - Export: `docx`
 - LLM: Moonshot / Kimi
+
+## 开源协议
+
+本项目使用 [MIT License](LICENSE)。
