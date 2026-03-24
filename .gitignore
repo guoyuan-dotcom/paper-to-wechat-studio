@@ -1,0 +1,62 @@
+# Dependencies
+backend/node_modules/
+frontend/node_modules/
+
+# Next.js / local build output
+frontend/.next/
+
+# Local environment and secrets
+backend/.env
+.env
+backend/data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Runtime output
+backend/generated/*
+!backend/generated/.gitkeep
+backend/uploads/*
+!backend/uploads/.gitkeep
+*.log
+backend/*.log
+frontend/*.log
+
+# Temporary debug files
+backend/tmp_*.json
+backend/last-response.json
+*.bak
+
+# Local Windows launcher / packaging artifacts
+dist/
+installer/
+release/
+build-installer.ps1
+build-release.ps1
+INSTALL.bat
+installer.nsi
+launch.ps1
+launcher-package.json
+launcher.js
+launcher.log
+LAUNCHER_GUIDE.md
+package-launcher.json
+pkg.json
+Research Workbench.vbs
+Research-Workbench.exe
+Research-Workbench.vbs
+ResearchWorkbench.bat
+ResearchWorkbench.exe
+ResearchWorkbench.SED
+ResearchWorkbench.vbs
+standalone-launcher.js
+start-workbench.bat
+start-workbench.ps1
+START.cmd
+START_HERE.md
+一键启动.cmd
+启动 Research Workbench.bat
+
+# OS files
+Thumbs.db
+Desktop.ini
